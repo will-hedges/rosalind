@@ -15,12 +15,11 @@ with open("rosalind_tran.txt", "r") as infile:
 s1, s2 = data[0], data[1]
 transitions, transversions = 0, 0
 
-for i, x in enumerate(s1):
-    y = s2[i]
+for x, y in zip(s1, s2):
     if x != y:
         if x in "AG" and y in "AG" or x in "CT" and y in "CT":
             transitions += 1
         elif x in "AG" and y in "CT" or x in "CT" and y in "AG":
             transversions += 1
 
-print(transitions / transversions)
+print(transitions / transversions) # 2.031578947368421
