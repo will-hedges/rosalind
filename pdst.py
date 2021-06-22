@@ -1,28 +1,27 @@
-#! python3
-# pdst.py - http://rosalind.info/problems/pdst/
+#!/usr/bin/env python3
+# pdst.py
 
-import os
-from pathlib import Path
-os.chdir(Path(__file__).parent)
+from roz import get_fasta_dict, copy_answer_to_clipboard
 
-
-# with open('pdst_test.txt', 'r') as infile:
-with open('rosalind_pdst.txt', 'r') as infile:
-    data = [line.strip() for line in infile.readlines() if not line.startswith('>')]
+data = get_fasta_dict('rosalind_pdst.txt')
 
 ans = []
-for j in data:
-    lst = []
-    for k in data:
+for strand1 in data.values():
+    res = []
+    for strand2 in data.values():
         count = 0
-        for b1, b2 in zip(j, k):
-            if b1 != b2:
+        for base1, base2 in zip(list(strand1), list(strand2)):
+            if base1 != base2:
                 count += 1
-        lst.append('%.5f' % (count / len(j)))
-    ans.append(' '.join(lst))
+        # fill in zeros so that you have a total of 5 decimal places
+        #   but clip off extra decimal places
+        fmt = '{:<07}'
+        res.append(fmt.format(count/len(strand1))[:7])
+    ans.append(' '.join(res))
 
-with open('pdst_ans.txt', 'w') as outfile:
-    for a in ans:
-        outfile.write(f'{a}\n')
+outfile = 'pdst_answer.txt'
+with open(outfile, 'w') as f:
+    for line in ans:
+        f.write(line + '\n')
 
-print('Done.')
+copy_answer_to_clipboard(outfile)
