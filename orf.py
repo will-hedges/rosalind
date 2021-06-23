@@ -3,31 +3,42 @@
 
 import re
 
-from roz import load_fasta_dict, load_codons, copy_answer_to_clipboard, translate_to_amino_acids
+from roz import *
 
+def orf(data):
+    codons = load_codons()['dna']
+    start_codon = [codon for codon, aa in codons.items() if aa == 'M'].pop()
+    stop_codons = [codon for codon, aa in codons.items() if aa is None]
 
-# choose rna codons
-codons = load_codons()['dna']
-start_codon = [codon for codon, aa in codons.items() if aa == 'M'].pop()
-stop_codons = [codon for codon, aa in codons.items() if aa is None]
-
-data = load_fasta_dict('rosalind_orf.txt')
-data = list(data.values()).pop()
-
-res = []
-
-while True:
-    stop_idxs = sorted([data.index(stop_codon) for stop_codon in stop_codons if stop_codon in data])
-    if any(stop_idxs):
+    res = []
+    while data:
         try:
             start_idx = data.index(start_codon)
-            stop_idx = stop_idxs[0]
+            data = data[start_idx:]
+            stop_idx = sorted([data.index(stop_codon) for stop_codon in stop_codons if stop_codon in data])[0]
+            strand = data[:stop_idx]
+            res.append(translate_to_amino_acids(strand))
+            data = data[stop_idx:]
         except ValueError:
             break
-        else:
-            strand = data[start_idx:stop_idx]
-            data = data[stop_idx+2:]
-            aa_chain = translate_to_amino_acids(strand)
-            res.append(aa_chain)
+        except IndexError:
+            break
+    return res
 
-print(res)
+
+data = load_fasta_dict('rosalind_orf.txt')
+data1 = list(data.values()).pop()
+data2 = reverse_complement(data1)
+
+res = []
+res += orf(data1)
+res += orf(data2)
+
+print(set(res))
+
+"""
+MLLGSFRLIPKETLIQVAGSSPCNLS
+M
+MGMTPRLGLESLLE
+MTPRLGLESLLE
+"""

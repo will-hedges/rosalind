@@ -35,6 +35,22 @@ def load_codons():
         codons = json.load(f)
     return codons
 
+
+def reverse_complement(strand):
+    strand = list(strand)
+    strand.reverse()
+    res = ''
+    for base in strand:
+        if base == 'A':
+            res += 'T'
+        elif base == 'T':
+            res += 'A'
+        elif base == 'C':
+            res += 'G'
+        elif base == 'G':
+            res += 'C'
+    return res
+
 # TODO make a nice answer writer function? maybe maybe not
 def translate_to_amino_acids(strand):
     codons = load_codons()
@@ -46,8 +62,6 @@ def translate_to_amino_acids(strand):
     chunks = [strand[i:i+3] for i in range(0, len(strand), 3)]
     aas = []
     for chunk in chunks:
-        if len(chunk) == 3:
+        if len(chunk) == 3 and codons[chunk] is not None:
             aas.append(codons[chunk])
     return ''.join(aas)
-
-print(translate_to_amino_acids('ACTGCATATA'))
