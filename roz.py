@@ -51,6 +51,9 @@ def reverse_complement(strand):
             res += 'C'
     return res
 
+def split_into_codons(strand):
+    return [strand[i:i+3] for i in range(0, len(strand), 3)]
+
 # TODO make a nice answer writer function? maybe maybe not
 def translate_to_amino_acids(strand):
     codons = load_codons()
@@ -59,7 +62,7 @@ def translate_to_amino_acids(strand):
     else:
         codons = codons['dna']
     ## this may or may not work, what if no U or T?
-    chunks = [strand[i:i+3] for i in range(0, len(strand), 3)]
+    chunks = split_into_codons(strand)
     aas = []
     for chunk in chunks:
         if len(chunk) == 3 and codons[chunk] is not None:
