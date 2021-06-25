@@ -1,11 +1,11 @@
 import re
 
-id_re = re.compile(r'(>Rosalind_\d{4})([ATGC]+)')
+id_re = re.compile(r"(>Rosalind_\d{4})([ATGC]+)")
 
 
 def digraph(file, k):
     f = open(file)
-    lines = ''.join(f.readlines()).replace('\n', '')
+    lines = "".join(f.readlines()).replace("\n", "")
     f.close()
     lines = re.findall(id_re, lines)
     ids = [line[0][1:] for line in lines]
@@ -19,7 +19,7 @@ def digraph(file, k):
         matches = [index for index, prefix in enumerate(prefixes) if prefix == suffix]
         for m in matches:
             if id != ids[m]:
-                print(f'{id} {ids[m]}')
+                print(f"{id} {ids[m]}")
 
 
-digraph('rosalind_grph.txt', 3)
+digraph("rosalind_grph.txt", 3)

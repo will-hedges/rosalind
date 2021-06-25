@@ -14,14 +14,14 @@ def twoWayPartition(arr):
     return B
 
 
-f = open('rosalind_par.txt')
+f = open("rosalind_par.txt")
 n = int(f.readline().strip())
-A =  [int(i) for i in f.readline().split(' ')]
+A = [int(i) for i in f.readline().split(" ")]
 f.close()
 
 B = twoWayPartition(A)
 
 
 ### copy answer
-pyperclip.copy(' '.join([str(i) for i in B]))
-print('B copied to clipboard')
+pyperclip.copy(" ".join([str(i) for i in B]))
+print("B copied to clipboard")

@@ -3,13 +3,13 @@
 
 from roz import get_fasta_dict, copy_answer_to_clipboard
 
-data = get_fasta_dict('rosalind_lcsm.txt')
+data = get_fasta_dict("rosalind_lcsm.txt")
 data = list(data.values())
 first_strand = data[0]
 
-ans = ''
+ans = ""
 # slice fwd
-for i in range(1, len(data[0])+1):
+for i in range(1, len(data[0]) + 1):
     res = []
     sub_string = first_strand[:i]
     for strand in data:

@@ -8,7 +8,7 @@ from pathlib import Path
 os.chdir(Path(__file__).parent)
 
 data = []
-with open('rosalind_tree.txt', 'r') as infile:
+with open("rosalind_tree.txt", "r") as infile:
     for line in infile.readlines():
         data.append([int(x) for x in line.split()])
 

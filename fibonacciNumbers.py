@@ -10,4 +10,4 @@ def fibonacciNumber(file):
     return fib[-1]
 
 
-print(fibonacciNumber('rosalind_fibo.txt'))
+print(fibonacciNumber("rosalind_fibo.txt"))
