@@ -5,8 +5,6 @@ import json
 
 import pyperclip
 
-# TODO write unit tests
-
 def load_fasta_dict(filepath):
     fasta_dict = {}
     with open(filepath) as f:
@@ -32,8 +30,8 @@ def copy_answer_to_clipboard(filepath):
 
 def load_codons():
     with open('codons.json') as f:
-        codons = json.load(f)
-    return codons
+        codon_dict = json.load(f)
+    return codon_dict
 
 
 def reverse_complement(strand):
@@ -51,20 +49,27 @@ def reverse_complement(strand):
             res += 'C'
     return res
 
-def split_into_codons(strand):
-    return [strand[i:i+3] for i in range(0, len(strand), 3)]
 
-# TODO make a nice answer writer function? maybe maybe not
-def translate_to_amino_acids(strand):
-    codons = load_codons()
-    if 'U' in strand:
-        codons = codons['rna']
+def translate_codons_to_amino_acids(list_of_codons):
+    codon_dict = load_codons()
+    if 'U' in ''.join(list_of_codons):
+        codon_dict = codon_dict['rna']
     else:
-        codons = codons['dna']
-    ## this may or may not work, what if no U or T?
-    chunks = split_into_codons(strand)
-    aas = []
-    for chunk in chunks:
-        if len(chunk) == 3 and codons[chunk] is not None:
-            aas.append(codons[chunk])
-    return ''.join(aas)
+        codon_dict = codon_dict['dna']
+    protein = ''
+    while list_of_codons:
+        codon = list_of_codons.pop(0)
+        try:
+            aa = codon_dict[codon]
+        except KeyError:
+            break
+        else:
+            if aa is None:
+                break
+            else:
+                protein += aa
+    return (protein, list_of_codons)
+
+
+def split_into_codons(string_of_bases):
+    return [string_of_bases[i:i+3] for i in range(0, len(string_of_bases), 3)]
