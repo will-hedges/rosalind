@@ -19,9 +19,19 @@ def load_fasta_dict(filepath):
             name = line
         else:
             strand += line
-    # capture the last one built strand
+    # capture the last built strand
     fasta_dict[name] = strand
     return fasta_dict
+
+
+def load_fasta_string(filepath):
+    '''
+    Return the single string of a FASTA input
+    for problems that take a single string input
+    '''
+    fasta_dict = load_fasta_dict(filepath)
+    fasta_str = [v for v in fasta_dict.values()].pop()
+    return fasta_str
 
 
 def copy_answer_to_clipboard(filepath):
@@ -73,4 +83,4 @@ def translate_codons_to_amino_acids(list_of_codons):
 
 
 def split_into_codons(string_of_bases):
-    return [string_of_bases[i : i + 3] for i in range(0, len(string_of_bases), 3)]
+    return [string_of_bases[i: i+3] for i in range(0, len(string_of_bases), 3)]
