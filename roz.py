@@ -7,6 +7,10 @@ import pyperclip
 
 
 def load_fasta_dict(filepath):
+    '''
+    Return the input data from filepath as a dictionary.
+    Keys are FASTA ids, values are DNA/RNA strings.
+    '''
     fasta_dict = {}
     with open(filepath) as f:
         data = f.read().splitlines()
@@ -24,14 +28,21 @@ def load_fasta_dict(filepath):
     return fasta_dict
 
 
+def load_fasta_strings(filepath):
+    '''
+    Return all strings of a FASTA input, without ids
+    '''
+    fasta_dict = load_fasta_dict(filepath)
+    fasta_vals = [v for v in fasta_dict.values()]
+    return fasta_vals
+
+
 def load_fasta_string(filepath):
     '''
     Return the single string of a FASTA input
     for problems that take a single string input
     '''
-    fasta_dict = load_fasta_dict(filepath)
-    fasta_str = [v for v in fasta_dict.values()].pop()
-    return fasta_str
+    return load_fasta_strings(filepath)[0]
 
 
 def copy_answer_to_clipboard(filepath):
