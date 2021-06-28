@@ -3,38 +3,37 @@
 
 
 import itertools
-import logging
-import os
-from pathlib import Path
-
-
-logging.basicConfig(level=logging.DEBUG, format=" %(levelname)s - %(message)s")
-# logging.disable(logging.CRITICAL)
-
-os.chdir(Path(__file__).parent)
 
 
 def sign(n):
-
     lst = []
     for i in range(1, n + 1):
         lst.append(i)
         lst.append(-i)
 
-    perms = [perm for perm in itertools.permutations(lst, 2)]
+    # take a look at output
+    #   getting repeat numbers
+    #       i.e. for n = 4 --> -1, 1, 2, 3
+    perms = [perm for perm in itertools.permutations(lst, n)]
     for perm in perms:
-        a, b = perm[0], perm[1]
-        if abs(a) == abs(b):
+        if len(set([abs(x) for x in perm])) < n:
             perms.remove(perm)
 
-    with open("sign_ans.txt", "w") as outfile:
-        outfile.write(f"{len(perms)}\n")
-        for perm in perms:
+    return perms
+
+
+def main():
+    with open('rosalind_sign.txt') as infile:
+        n = int(infile.readline())
+
+    ans = sign(n)
+
+    with open('sign_ans.txt', 'w') as outfile:
+        outfile.write(str(len(ans)) + '\n')
+        for perm in ans:
             perm = map(str, perm)
             outfile.write(f'{" ".join(perm)}\n')
 
-    print("Done.")
-    return
 
-
-sign(2)
+if __name__ == '__main__':
+    main()
