@@ -4,25 +4,19 @@
 import itertools
 
 
-def count_subsets(n):
-    """
-    n = 3 ("buffy", "puppy", "nugget")
-    1. {}
-    2, 3, 4. {"buffy"}, {"puppy"}, {"nugget"}
-    5. {"buffy", "puppy"}
-    6. {"buffy", "nugget"}
-    7. {"puppy", "nugget"}
-    8. {"nugget", "puppy", "buffy"}
-    """
-    res = [itertools.combinations(range(n), ni) for ni in range(n + 1)]
-    res = itertools.chain(*res)
+def count_subsets(s, n):
+    res = 0
+    for i in range(n):
+        res += len(list(itertools.combinations(s, i)))
     return res
 
 
 def main():
     with open("rosalind_sset.txt", "r") as infile:
-        data = int(infile.read().strip())
-    res = count_subsets(data)
+        n = int(infile.read().strip())
+
+    s = set(i for i in range(n))
+    res = count_subsets(s, n)
     print(res)
     return
 
